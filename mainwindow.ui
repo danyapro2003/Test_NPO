@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1082</width>
+    <height>558</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Файловый модификатор XOR</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="labelInput">
+        <property name="text">
+         <string>Выберите папку:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEditInputPath"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnBrowseInput">
+        <property name="text">
+         <string>Обзор</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="layoutMask">
+      <item>
+       <widget class="QLabel" name="labelMask">
+        <property name="text">
+         <string>Маска входных файлов:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEditMask"/>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="checkDeleteInput">
+      <property name="text">
+       <string>Удалять входные файлы после обработки</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="layoutSavePath">
+      <item>
+       <widget class="QLabel" name="labelSavePath">
+        <property name="text">
+         <string>Папка для сохранения:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEditSavePath"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnBrowseOutput">
+        <property name="text">
+         <string>Обзор</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="layoutNameConflict">
+      <item>
+       <widget class="QLabel" name="labelNameConflict">
+        <property name="text">
+         <string>Если имя уже существует:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboNameConflict">
+        <item>
+         <property name="text">
+          <string>Перезаписать</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Добавить счётчик</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="layoutMode">
+      <item>
+       <widget class="QLabel" name="labelMode">
+        <property name="text">
+         <string>Режим работы:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioOnce">
+        <property name="text">
+         <string>Разовый запуск</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioTimer">
+        <property name="text">
+         <string>По таймеру</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="layoutInterval">
+      <item>
+       <widget class="QLabel" name="labelInterval">
+        <property name="text">
+         <string>Периодичность опроса (сек):</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="spinInterval">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>3600</number>
+        </property>
+        <property name="value">
+         <number>5</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="layoutXorValue">
+      <item>
+       <widget class="QLabel" name="labelXorValue">
+        <property name="text">
+         <string>Значение 8 байт (hex):</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEditXorValue">
+        <property name="maxLength">
+         <number>20</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QPushButton" name="btnStart">
+      <property name="text">
+       <string>Запустить</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="labelStatus">
+      <property name="text">
+       <string>Статус: Ожидание</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QProgressBar" name="progressBar">
+      <property name="value">
+       <number>0</number>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
