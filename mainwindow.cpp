@@ -106,10 +106,19 @@ void MainWindow::runXorProcess(){
 
     QString textXOR = ui->lineEditXorValue->text();
     bool okXOR;
-    quint64 key = textXOR.toULongLong(&okXOR);
+
+    //this code working with hexadecimal key
+    quint64 key = textXOR.toULongLong(&okXOR, 16);
     if (!okXOR) {
-        qWarning() << "ERROR casting 8 byte key! Try one more.";
+        qWarning() << "ERROR: enter correct hex ";
+        return;
     }
+
+    //this code working with decimal key
+    // quint64 key = textXOR.toULongLong(&okXOR);
+    // if (!okXOR) {
+    //     qWarning() << "ERROR casting 8 byte key! Try one more.";
+    // }
 
     if(inputDir.isEmpty() || outputDir.isEmpty() || mask.isEmpty()){
         qWarning() << "Please, fill in all fields!";
