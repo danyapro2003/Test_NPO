@@ -21,10 +21,13 @@ public:
 
 private slots:
     void on_btnBrowseInput_clicked();
-
     void on_btnBrowseOutput_clicked();
-
     void on_btnStart_clicked();
+
+signals:
+    void progressChanged(int value);
+    void progressSetMaximum(int value);
+    void statusChanged(const QString &text);
 
 private:
     Ui::MainWindow *ui;

@@ -173,7 +173,7 @@
       <item>
        <widget class="QLineEdit" name="lineEditXorValue">
         <property name="maxLength">
-         <number>20</number>
+         <number>16</number>
         </property>
        </widget>
       </item>
@@ -188,6 +188,12 @@
     </item>
     <item>
      <widget class="QLabel" name="labelStatus">
+      <property name="maximumSize">
+       <size>
+        <width>1064</width>
+        <height>51</height>
+       </size>
+      </property>
       <property name="text">
        <string>Статус: Ожидание</string>
       </property>

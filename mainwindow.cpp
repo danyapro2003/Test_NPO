@@ -4,6 +4,7 @@
 #include <QFileDialog>
 #include <QDataStream>
 #include <QByteArray>
+#include <QtConcurrent/QtConcurrentRun>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -13,6 +14,19 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     connect(timer, &QTimer::timeout, this, &MainWindow::runXorProcess);
+
+    connect(this, &MainWindow::progressChanged, ui->progressBar, &QProgressBar::setValue);
+    connect(this, &MainWindow::progressSetMaximum, ui->progressBar, &QProgressBar::setMaximum);
+    connect(this, &MainWindow::statusChanged, ui->labelStatus, &QLabel::setText);
+
+    // connect(ui->btnBrowseOutput, &QPushButton::clicked,
+    //         this, &MainWindow::on_btnBrowseOutput_clicked);
+
+    // connect(ui->btnBrowseInput, &QPushButton::clicked,
+    //         this, &MainWindow::on_btnBrowseInput_clicked);
+
+    // connect(ui->btnStart, &QPushButton::clicked,
+    //         this, &MainWindow::on_btnStart_clicked);
 }
 
 MainWindow::~MainWindow()
@@ -55,8 +69,15 @@ QStringList MainWindow::findInputFiles(const QString &folderPath, const QString 
 
     if(mask.contains(';')){
         masks = mask.split(';', Qt::SkipEmptyParts);
+        for (auto &i : masks){
+            i = i.trimmed();
+        }
+        //qDebug() << masks[1];
     } else {
         masks << mask;
+        for (auto &i : masks){
+            i = i.trimmed();
+        }
     }
 
     QStringList files = dir.entryList(masks, QDir::Files);
@@ -65,7 +86,7 @@ QStringList MainWindow::findInputFiles(const QString &folderPath, const QString 
 
 void MainWindow::xorFile(QByteArray &fileData, const quint64 key) {
     for (int i = 0; i < fileData.size(); ++i) {
-        fileData[i] = fileData[i] ^ key; // XOR с ключом
+        fileData[i] = fileData[i] ^ key;
     }
 }
 
@@ -79,13 +100,13 @@ void MainWindow::runXorProcess(){
     QString inputDir(ui->lineEditInputPath->text());
     QString outputDir(ui->lineEditSavePath->text());
     QString mask = ui->lineEditMask->text();
-    bool mode = ui->radioOnce->isChecked();
+    //bool mode = ui->radioOnce->isChecked();
     bool deleteFiles = ui->checkDeleteInput->isChecked();
     bool ifNameExist = ui->comboNameConflict->currentIndex(); // 0 - rewrite; 1 - iterator for files
 
     QString textXOR = ui->lineEditXorValue->text();
     bool okXOR;
-    quint64 key = textXOR.toULongLong(&okXOR); // ok = true если конвертация прошла успешно
+    quint64 key = textXOR.toULongLong(&okXOR);
     if (!okXOR) {
         qWarning() << "ERROR casting 8 byte key! Try one more.";
     }
@@ -96,17 +117,21 @@ void MainWindow::runXorProcess(){
     }
 
     qDebug() << "Starting XOR";
-    ui->labelStatus->setText("Статус: Обработка файлов...");
+    emit statusChanged("Статус: Обработка файлов...");
+    //ui->labelStatus->setText("Статус: Обработка файлов...");
 
     QStringList files = findInputFiles(inputDir, mask);
 
-    ui->progressBar->setValue(0);
-    ui->progressBar->setMaximum(files.size());
+    emit progressChanged(0);
+    emit progressSetMaximum(files.size());
+    // ui->progressBar->setValue(0);
+    // ui->progressBar->setMaximum(files.size());
 
     int iterFiles = 1;
     for(auto &filePath: files){
         iterFiles++;
-        ui->progressBar->setValue(iterFiles);
+        emit progressChanged(iterFiles);
+        //ui->progressBar->setValue(iterFiles);
         //qDebug() << filePath;
         filePath = inputDir + "/" + filePath;
         QFile file(filePath);
@@ -132,7 +157,6 @@ void MainWindow::runXorProcess(){
                 outputPath += listName[i];
             }
             outputPath += QString::number(iterFiles) + "." + listName.last();
-            qDebug() << "last lis part  " << outputPath;
         }
 
         QFile outputFile(outputPath);
@@ -154,14 +178,16 @@ void MainWindow::runXorProcess(){
             }
         }
     }
-    ui->labelStatus->setText("Статус: Готово");
+    emit statusChanged("Статус: Готово");
+    //ui->labelStatus->setText("Статус: Готово");
     qDebug() << "XOR is end";
 }
 
 void MainWindow::on_btnStart_clicked(){
     if (ui->radioOnce->isChecked()) {
-        runXorProcess();
-
+        auto future = QtConcurrent::run([this]() {
+            runXorProcess();
+        });
     }
     else if (ui->radioTimer->isChecked()) {
         bool ok;

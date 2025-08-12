@@ -196,7 +196,7 @@ public:
 
         lineEditXorValue = new QLineEdit(centralwidget);
         lineEditXorValue->setObjectName("lineEditXorValue");
-        lineEditXorValue->setMaxLength(20);
+        lineEditXorValue->setMaxLength(16);
 
         layoutXorValue->addWidget(lineEditXorValue);
 
@@ -210,6 +210,7 @@ public:
 
         labelStatus = new QLabel(centralwidget);
         labelStatus->setObjectName("labelStatus");
+        labelStatus->setMaximumSize(QSize(1064, 51));
 
         verticalLayout->addWidget(labelStatus);
 
